@@ -7,12 +7,21 @@
     owner: root
     mode:  0644
 
-- name: services > Init
+- name: services > Init (Debian 7)
   template:
     src:   services/init.j2
     dest:  /etc/init.d/supervisor
     owner: root
     mode:  0755
+  when: (ansible_distribution == "Debian" and ansible_distribution_major_version == '7')
+
+- name: services > Init (Debian 8)
+  template:
+    src:   services/systemd.j2
+    dest:  /etc/systemd/supervisor.service
+    owner: root
+    mode:  0644
+  when: (ansible_distribution == "Debian" and ansible_distribution_major_version > 8)
 
 - name: services > Services
   service:
