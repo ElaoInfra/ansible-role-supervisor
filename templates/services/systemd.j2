@@ -1,0 +1,19 @@
+# supervisord service for sysstemd (Debian 8.0+)
+# by ElaoInfra (https://github.com/ElaoInfra)
+[Unit]
+Description=Supervisor daemon
+After=syslog.target network.target remote-fs.target nss-lookup.target
+
+[Service]
+EnvironmentFile=-/etc/default/supervisor
+ExecStart=/usr/local/bin/supervisord
+ExecStop=/usr/local/bin/supervisorctl $OPTIONS shutdown
+ExecReload=/usr/local/bin/supervisorctl $OPTIONS reload
+Type=forking
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+Alias=supervisor.service
